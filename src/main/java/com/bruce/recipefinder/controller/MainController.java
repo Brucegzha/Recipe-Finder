@@ -120,4 +120,12 @@ public class MainController {
         }
         return "redirect:/fridge";
     }
+
+    //Fridge page get fridge list
+    @RequestMapping(value="/recipes",method = RequestMethod.GET)
+    public String getRecipeList(Model model) {
+        model.addAttribute("recipesList",recipeList);
+        return "recipes";
+    }
+    
 }
