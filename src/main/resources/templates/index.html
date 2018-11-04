@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+    <head>
+        <title>Recipe Finder</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Recipe Finder</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="/fridge">Fridge</a></li>
+            <li><a href="/recipes">Recipe</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Recipe Finder</h1>
+    <p>Given a list of items in the fridge (presented as a csv list), and a collection of recipes (a collection of JSON
+        formatted recipes), produce a recommendation for what to cook tonight.</p>
+    <br>
+    <form action="#" th:action="@{/generateRecipe}" method="post">
+        <!--<input name="recipeToday" id="recipeToday">-->
+        <button type="submit" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" name="generateRecipes" id="generateRecipes" >Generate Recipe</button>
+    </form>
+    <h3 th:text="'Recommend Tonight: ' + ${recipeToday}"></h3>
+    <br>
+    <br>
+    <h2>Food in Fridge</h2>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Num</th>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Unit</th>
+            <th>Use-By</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fridge : ${fridgeList}">
+            <td th:text="${fridge.id}"></td>
+            <td th:text="${fridge.item}"></td>
+            <!--<td><a th: href="@{/users/update/{userId}(userId=${fridge.num})}" th: text="${fridge.item}"></a></td>-->
+            <td th:text="${fridge.amount}"></td>
+            <td th:text="${fridge.unit}"></td>
+            <td th:text="${#dates.format(fridge.useBy, 'dd/MM/yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <br>
+    <br>
+
+    <h2>Recipe</h2>
+    <br>
+    <div th:each="recipe : ${recipeList}" class="panel-group" id="accordion">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion"  th:href="'#'+ 'recipeCollapse' + ${recipe.id}" th:text="${recipe.name}"></a>
+                </h4>
+            </div>
+            <div th:id="'recipeCollapse'+${recipe.id}" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <!--<ul  th:each="ingredients : ${recipe.ingredients}" class="list-group">-->
+                    <!--<li class="list-group-item" th:text="'  Item: ' + ${ingredients.item} + '  Amount: ' + ${ingredients.amount} + '  Unit: ' + ${ingredients.unit}"></li>-->
+                    <!--<li class="list-group-item">css</li>-->
+                    <!--<li class="list-group-item">javascript</li>-->
+                    <!--</ul>-->
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th>Unit</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ingredients : ${recipe.ingredients}">
+                            <td th:text="${ingredients.item}"></td>
+                            <!--<td><a th: href="@{/users/update/{userId}(userId=${fridge.num})}" th: text="${fridge.item}"></a></td>-->
+                            <td th:text="${ingredients.amount}"></td>
+                            <td th:text="${ingredients.unit}"></td>
+                            <!--<td><a class="btn btn-danger" th: href="@{/users/delete/{userId}(userId=${fridge.num})}">删除</a></td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+</div>
+<br><br>
+</body>
+</html>
+
