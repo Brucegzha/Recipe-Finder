@@ -23,6 +23,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 //import jdk.nashorn.internal.parser.JSONParser;
 
@@ -31,12 +33,15 @@ import java.util.ArrayList;
 public class MainController {
     public ArrayList<Fridge> fridgeList = new ArrayList<Fridge>();
     public ArrayList<Recipe> recipeList = new ArrayList<Recipe>();
+    private static ArrayList<Recipe> availableRecipesList = new ArrayList<Recipe>();
+
 
     //Home page get fridge, recipes, recommend result
     @RequestMapping(value="/",method = RequestMethod.GET)
-    public String getFridgeItemList(Model model) {
+    public String getItemList(Model model) {
         model.addAttribute("recipeList",recipeList);
         model.addAttribute("fridgeList",fridgeList);
+        model.addAttribute("recipeToday",recommendRecipe(availableRecipesList).getName());
         return "index";
     }
 
@@ -185,4 +190,106 @@ public class MainController {
             System.out.println(exception);
         }
     }
+
+    @RequestMapping(value="/generateRecipe",method = RequestMethod.POST)
+    public String generateRecommendRecipe(@RequestParam(value = "generateRecipes") String ll){
+        for(int x = 0; x < recipeList.size(); x = x+1) {
+            int recipeListSize = recipeList.get(x).getIngredients().size();
+            int compareListSize = 0;
+            for(int n = 0; n <recipeList.get(x).getIngredients().size(); n++){
+                for(int k = 0;k<fridgeList.size();k++){
+                    if (fridgeList.get(k).getItem().equals(recipeList.get(x).getIngredients().get(n).getItem()) &&
+                            fridgeList.get(k).getAmount() >= recipeList.get(x).getIngredients().get(n).getAmount()){
+                        compareListSize = compareListSize + 1;
+                    }
+                }
+            }
+            if (recipeListSize == compareListSize){
+                availableRecipesList.add(recipeList.get(x));
+//                System.out.println(recipeList.get(x).getName());
+            }
+        }
+        return "redirect:/";
+    }
+
+    public  Recipe recommendRecipe(List<Recipe> availableRecipesList){
+        Date closeDate = new Date();
+        Date today = new Date();
+        Recipe recommendRecipe = new Recipe();
+        for (Recipe recommend : availableRecipesList){
+            for (Ingredient ingredient :recommend.getIngredients()){
+                for(Fridge f : fridgeList){
+                    if (today.compareTo(closeDate) == 0){
+                        recommendRecipe = recommend;
+                        closeDate = f.getUseBy();
+                    }
+                    if (f.getItem().equals(ingredient.getItem())){
+                        if (f.getUseBy().before(closeDate)){
+                            recommendRecipe = recommend;
+                            closeDate = f.getUseBy();
+                        }
+                    }
+                }
+            }
+        }
+
+        if(availableRecipesList.size() == 0 || recommendRecipe == null){
+            recommendRecipe =  new Recipe();
+            recommendRecipe.setName("Order Takeout");
+
+        }
+
+
+
+//
+//        System.out.println("\t > No. of valid Recipes to cook: " + availableRecipesList.size());
+//        Date today = new Date();
+//        Recipe recommendedRecipe = null;
+//        List<Date> usedByDate = new ArrayList<Date>();
+//        Map<Recipe, Date> recipeScore = new HashMap<Recipe, Date>();
+//        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+//
+//        Date closestDate = null;
+//        String itemExpiringSoon = null;
+//
+//        // Gather the items expiring soon
+//        for(Fridge f : fridgeList){
+//            if (f.getUseBy().after(today)){
+//
+//                if(closestDate == null){
+//                    closestDate = f.getUseBy();
+//                    itemExpiringSoon = f.getItem();
+//                }else{
+//                    if (f.getUseBy().before(closestDate)){
+//                        closestDate = f.getUseBy();
+//                        itemExpiringSoon = f.getItem();
+//                    }
+//                }
+//            }
+//        }
+//
+//        if (itemExpiringSoon!=null){
+//            System.out.println("\t > " + itemExpiringSoon + " is expiring soon at " + dateFormatter.format(closestDate));
+//        }
+//
+//        for (Recipe recipe : availableRecipesList){
+//
+//            for (Ingredient ingredient : recipe.getIngredients()){
+//
+//                if(ingredient.getItem().equals(itemExpiringSoon)){
+//                    recommendedRecipe = recipe;
+//                }
+//            }
+//        }
+//
+//        if(availableRecipesList.size() == 0 || recommendedRecipe == null){
+//            recommendedRecipe =  new Recipe();
+//            recommendedRecipe.setName("Order Takeout");
+//
+//        }
+
+        return recommendRecipe;
+
+    }
+
 }
