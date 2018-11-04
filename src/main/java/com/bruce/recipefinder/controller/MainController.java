@@ -1,7 +1,11 @@
 package com.bruce.recipefinder.controller;
 
 import com.bruce.recipefinder.entity.Fridge;
+import com.bruce.recipefinder.entity.Ingredient;
 import com.bruce.recipefinder.entity.Recipe;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -119,5 +123,66 @@ public class MainController {
             }
         }
         return "redirect:/fridge";
+    }
+
+    //Fridge page get fridge list
+    @RequestMapping(value="/recipes",method = RequestMethod.GET)
+    public String getRecipeList(Model model) {
+        model.addAttribute("recipesList",recipeList);
+        return "recipes";
+    }
+
+    //Recipe page upload recipe JSON file
+    @RequestMapping(value = "/uploadRecipeJSON", method = RequestMethod.POST)
+    public String uploadRecipeJSONFile(@RequestParam(value = "uploadRecipeJSON") MultipartFile file,
+                                       RedirectAttributes redirectAttributes) {
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            return "redirect:/recipes";
+        }
+
+        try {
+            // Get the file and save it somewhere
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(file.getOriginalFilename());
+            Files.write(path, bytes);
+            readRecipeJsonFile(file.getOriginalFilename());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/recipes";
+    }
+
+    //Recipe Page read JSON File
+    public void readRecipeJsonFile(String path) {
+        JSONParser parser = new JSONParser();
+        try {
+            Object obj = parser.parse(new FileReader(path));
+            JSONArray recipeArrayList = (JSONArray) obj;
+
+            for(Object o : recipeArrayList){
+                JSONObject recipeObject = (JSONObject) o;
+                String name = (String) recipeObject.get("name");
+                JSONArray ingredientList = (JSONArray) recipeObject.get("ingredients");
+                ArrayList<Ingredient> newIngredientList = new ArrayList<Ingredient>();
+                for(Object os : ingredientList){
+                    JSONObject recipeObjects = (JSONObject) os;
+                    String item = (String) recipeObjects.get("item");
+                    String amount = (String) recipeObjects.get("amount");
+                    String unit = (String) recipeObjects.get("unit");
+                    Ingredient newIngredient = new Ingredient(item,Double.valueOf(amount),unit);
+                    newIngredientList.add(newIngredient);
+                }
+                Recipe newRecipe = new Recipe();
+                newRecipe.setId(recipeList.size()+1);
+                newRecipe.setName(name);
+                newRecipe.setIngredients(newIngredientList);
+                recipeList.add(newRecipe);
+            }
+        }catch (FileNotFoundException exception) {
+            System.out.println(exception);
+        }catch (Exception exception){
+            System.out.println(exception);
+        }
     }
 }
