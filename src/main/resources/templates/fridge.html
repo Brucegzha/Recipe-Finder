@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <!--<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">-->
+    <head>
+        <title>Recipe Finder</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+<body>
+
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Recipe Finder</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="/">Home</a></li>
+            <li class="active"><a href="#">Fridge</a></li>
+            <li><a href="/recipes">Recipe</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Food in Fridge</h2>
+    <form action="#" th:action="@{/resetFridge}" method="post">
+        <div class="btn-group mr-2">
+            <button type="submit" class="btn btn-danger" id="ResetFridge" name="ResetFridge">Clear</button>
+        </div>
+    </form>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Num</th>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Unit</th>
+            <th>Use-By</th>
+            <th>Option</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="fridge : ${fridgeList}">
+            <td th:text="${fridge.id}"></td>
+            <td th:text="${fridge.item}"></td>
+            <!--<td><a th: href="@{/users/update/{userId}(userId=${fridge.num})}" th: text="${fridge.item}"></a></td>-->
+            <td th:text="${fridge.amount}"></td>
+            <td th:text="${fridge.unit}"></td>
+            <td th:text="${#dates.format(fridge.useBy, 'dd/MM/yyyy')}"></td>
+            <td>
+                <form action="#" th:action="@{/deleteFridgeItem}" method="post" >
+                    <input type="hidden" id="deleteFridgeItemId" name="deleteFridgeItemId" th:value="${fridge.id}" />
+                    <button class="btn btn-danger" type="submit">DELETE</button>
+                </form>
+            </td>
+
+            <!--<a class="btn btn-danger" th:href="@{/deleteFridgeItem/{fridgeItemId}(fridgeItemId=${fridge.id})}">删除</a></td>-->
+        </tr>
+        </tbody>
+    </table>
+
+
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab1" data-toggle="tab">Form</a></li>
+        <li><a href="#tab2" data-toggle="tab">CSV</a></li>
+        <li><a href="#tab3" data-toggle="tab">Upload</a></li>
+    </ul>
+
+
+    <div class="tab-content">
+        <!--<div class="tab-pane active " id="tab1">-->
+        <!--<form action="#" th:action="@{home.html}" th:object="fridgeForm" method="post">-->
+        <!--<div class="form-group">-->
+        <!--<label>Item:</label>-->
+        <!--<input class="form-control" th:field="*{fridgeForm.item}" placeholder="Enter item name">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label>Amount:</label>-->
+        <!--<input class="form-control" th:field="*{fridgeForm.amount}" placeholder="Enter amount">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label>Unit:</label>-->
+        <!--<input class="form-control" th:field="*{fridgeForm.unit}" placeholder="Enter the unit">-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+        <!--<label>Use-By:</label>-->
+        <!--<input class="form-control" th:field="*{fridgeForm.useBy}" placeholder="Enter the use-By date">-->
+        <!--</div>-->
+        <!--<button type="submit" class="btn btn-success">Submit</button>-->
+        <!--</form>-->
+        <!--</div>-->
+         
+        <div class="tab-pane" id="tab2">
+            <form action="#" th:action="@{/add}" method="post" >
+                <div class="form-group">
+                    <label>Input with CSV Format</label>
+                    <textarea class="form-control" id="fridgeObject" name="fridgeObject" rows="3">jklm</textarea>
+                </div>
+
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="button" class="btn btn-warning">Example</button>
+                </div>
+                <div class="btn-group mr-2" role="group" aria-label="Second group">
+                    <button type="button" class="btn btn-danger">Clear</button>
+                </div>
+                <div class="btn-group" role="group" aria-label="Third group">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+
+
+
+            <!--<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">-->
+            <!--<div class="btn-group mr-2" role="group" aria-label="First group">-->
+            <!--<button type="button" class="btn btn-warning">Example</button>-->
+            <!--</div>-->
+            <!--<div class="btn-group mr-2" role="group" aria-label="Second group">-->
+            <!--<button type="button" class="btn btn-danger">Clear</button>-->
+            <!--</div>-->
+            <!--<div class="btn-group" role="group" aria-label="Third group">-->
+            <!--<button type="submit" class="btn btn-success">Submit</button>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+
+         
+        <div class="tab-pane" id="tab3">
+            <p>Upload CSV File only</p>
+            <form class="form-inline" action="#" th:action="@{/uploadFridgeCSV}" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label >CSV File:</label>
+                    <!--<input type="password" class="form-control" id="pwd" name="pwd">-->
+                </div>
+                <!--<button type="submit" class="btn btn-default" id="uploadFridgeCSV" name="uploadFridgeCSV">Upload</button>-->
+                <input type="file" name="uploadFridgeCSV"/><br/><br/>
+                <input type="submit" value="Submit" class="btn btn-success"/>
+            </form>
+            <br>
+            <!--<button type="button" class="btn btn-success">Submit</button>-->
+             
+        </div>
+    </div>
+</div>
