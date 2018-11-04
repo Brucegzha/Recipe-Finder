@@ -206,7 +206,6 @@ public class MainController {
             }
             if (recipeListSize == compareListSize){
                 availableRecipesList.add(recipeList.get(x));
-//                System.out.println(recipeList.get(x).getName());
             }
         }
         return "redirect:/";
@@ -238,58 +237,7 @@ public class MainController {
             recommendRecipe.setName("Order Takeout");
 
         }
-
-
-
-//
-//        System.out.println("\t > No. of valid Recipes to cook: " + availableRecipesList.size());
-//        Date today = new Date();
-//        Recipe recommendedRecipe = null;
-//        List<Date> usedByDate = new ArrayList<Date>();
-//        Map<Recipe, Date> recipeScore = new HashMap<Recipe, Date>();
-//        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
-//
-//        Date closestDate = null;
-//        String itemExpiringSoon = null;
-//
-//        // Gather the items expiring soon
-//        for(Fridge f : fridgeList){
-//            if (f.getUseBy().after(today)){
-//
-//                if(closestDate == null){
-//                    closestDate = f.getUseBy();
-//                    itemExpiringSoon = f.getItem();
-//                }else{
-//                    if (f.getUseBy().before(closestDate)){
-//                        closestDate = f.getUseBy();
-//                        itemExpiringSoon = f.getItem();
-//                    }
-//                }
-//            }
-//        }
-//
-//        if (itemExpiringSoon!=null){
-//            System.out.println("\t > " + itemExpiringSoon + " is expiring soon at " + dateFormatter.format(closestDate));
-//        }
-//
-//        for (Recipe recipe : availableRecipesList){
-//
-//            for (Ingredient ingredient : recipe.getIngredients()){
-//
-//                if(ingredient.getItem().equals(itemExpiringSoon)){
-//                    recommendedRecipe = recipe;
-//                }
-//            }
-//        }
-//
-//        if(availableRecipesList.size() == 0 || recommendedRecipe == null){
-//            recommendedRecipe =  new Recipe();
-//            recommendedRecipe.setName("Order Takeout");
-//
-//        }
-
         return recommendRecipe;
-
     }
 
 }
