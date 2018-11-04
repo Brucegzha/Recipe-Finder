@@ -63,98 +63,13 @@
                 </div>
             </div>
         </div>
-
-
-
-        <!--<div class="panel panel-default">-->
-        <!--<div class="panel-heading">-->
-        <!--<h4 class="panel-title">-->
-        <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Collapsible Group 1</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--<div id="collapse1" class="panel-collapse collapse in">-->
-        <!--<div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,-->
-        <!--sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,-->
-        <!--quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="panel panel-default">-->
-        <!--<div class="panel-heading">-->
-        <!--<h4 class="panel-title">-->
-        <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Collapsible Group 2</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--<div id="collapse2" class="panel-collapse collapse">-->
-        <!--<div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,-->
-        <!--sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,-->
-        <!--quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--<div class="panel panel-default">-->
-        <!--<div class="panel-heading">-->
-        <!--<h4 class="panel-title">-->
-        <!--<a data-toggle="collapse" data-parent="#accordion" href="#collapse3">Collapsible Group 3</a>-->
-        <!--</h4>-->
-        <!--</div>-->
-        <!--<div id="collapse3" class="panel-collapse collapse">-->
-        <!--<div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit,-->
-        <!--sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,-->
-        <!--quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>-->
-        <!--</div>-->
-        <!--</div>-->
     </div>
     <br>
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tab4" data-toggle="tab">Form</a></li>
-        <li><a href="#tab5" data-toggle="tab">CSV</a></li>
-        <li><a href="#tab6" data-toggle="tab">Upload</a></li>
+        <li class="active"><a href="#tab6" data-toggle="tab">Upload</a></li>
     </ul>
 
-    <div class="tab-content">
-        <div class="tab-pane active " id="tab4">
-            <form >
-                <div class="form-group">
-                    <label for="email">Item:</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
-                </div>
-                <div class="form-group">
-                    <label>Amount:</label>
-                    <!--<input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">-->
-                </div>
-                <div class="form-group">
-                    <label>Unit:</label>
-                    <!--<input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">-->
-                </div>
-                <div class="form-group">
-                    <label>Use-By:</label>
-                    <!--<input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">-->
-                </div>
-                <button type="submit" class="btn btn-success">Submit</button>
-            </form>
-        </div>
-         
-        <div class="tab-pane" id="tab5">
-            <form>
-                <div class="form-group">
-                    <label>Input with CSV Format</label>
-                    <!--<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>-->
-                </div>
-            </form>
 
-            <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <button type="button" class="btn btn-warning">Example</button>
-                </div>
-                <div class="btn-group mr-2" role="group" aria-label="Second group">
-                    <button type="button" class="btn btn-danger">Clear</button>
-                </div>
-                <div class="btn-group" role="group" aria-label="Third group">
-                    <button type="button" class="btn btn-success">Submit</button>
-                </div>
-            </div>
-        </div>
-
-         
         <div class="tab-pane" id="tab6">
             <p>Upload JSON File only</p>
             <form class="form-inline" action="#" th:action="@{/uploadRecipeJSON}" method="post" enctype="multipart/form-data">
@@ -166,6 +81,6 @@
             </form>
             <br>
         </div>
-    </div>
+
 
 </div>
