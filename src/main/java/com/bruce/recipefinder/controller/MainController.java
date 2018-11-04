@@ -100,4 +100,24 @@ public class MainController {
             System.out.println(exception);
         }
     }
+
+    //Clear the data in Fridge page
+    @RequestMapping(value = "/resetFridge", method = RequestMethod.POST)
+    public String resetFridgeData(@RequestParam(value = "ResetFridge") String fridgeCsvFile) {
+        fridgeList.clear();
+        return "redirect:/fridge";
+    }
+
+    //Fridge Page Delete specific item
+    @RequestMapping(value = "/deleteFridgeItem", method = RequestMethod.POST)
+    public String deleteFridgeObject(@RequestParam(value = "deleteFridgeItemId") String fridgeItemId) {
+//        System.out.println(fridgeItemId);
+        for(int x = 0; x < fridgeList.size(); x = x+1) {
+//            System.out.println(fridgeItemId);
+            if (fridgeList.get(x).getId() == Integer.valueOf(fridgeItemId)){
+                fridgeList.remove(x);
+            }
+        }
+        return "redirect:/fridge";
+    }
 }
