@@ -10,7 +10,6 @@ public class Recipe {
     public Recipe() {
     }
 
-
     public Recipe(int id, String name, ArrayList<Ingredient> ingredients) {
         this.id = id;
         this.name = name;
